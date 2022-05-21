@@ -13,7 +13,7 @@ export default function Widgets() {
 
         <TwitterTimelineEmbed
         sourceType='profile'
-        screenName='utdreport'
+        screenName='wafula_ug'
         options={{height: 1000}}
         />
     </div>

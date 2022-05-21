@@ -12,6 +12,7 @@ export const config = {
 
 
     useCdn: process.env.NODE_ENV === 'production',
+    token: process.env.SANITY_API_TOKEN,
   }
 
   export const sanityClient = createClient(config)
