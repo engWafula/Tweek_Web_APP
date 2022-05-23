@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import { Tweet } from '../typings'
+import { useSession } from 'next-auth/react'
 import moment from 'moment'
 import { Comment} from '../typings'
 import {
@@ -21,6 +22,9 @@ interface Props {
 export default function TweetComponent({ tweet }: Props) {
 
   const [comments, setComments] = useState<Comment[]>([])
+  const [commentBox,setcommentBox] =useState<boolean>(false)
+  const [input,setInput]=useState<string>("")
+  const {data:session}=useSession()
 
     const freshComments= async () => {
      
@@ -29,12 +33,16 @@ export default function TweetComponent({ tweet }: Props) {
       
     }
 
+    const handleSubmit=(e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    }
+
     useEffect(()=>{
     
       freshComments()
     },[])
 
- console.log(comments)
+ 
   return (
     <div className="flex flex-col space-x-3 border-y p-3">
       <div className="flex space-x-3 border-gray-100">
@@ -60,8 +68,8 @@ export default function TweetComponent({ tweet }: Props) {
         </div>
       </div>
       <div className='flex justify-between mt-5'>
-        <div className='flex items-center space-x-3 cursor-pointer text-gray-400'>
-          <ChatAlt2Icon className='h-5 w-5'/>
+        <div onClick={()=>session && setcommentBox(!commentBox)} className='flex items-center space-x-3 cursor-pointer text-gray-400'>
+          <ChatAlt2Icon  className='h-5 w-5'/>
           <p>{comments.length}</p>
         </div>
         <div className='flex items-center space-x-3 cursor-pointer text-gray-400'>
@@ -74,6 +82,21 @@ export default function TweetComponent({ tweet }: Props) {
           <UploadIcon className='h-5 w-5'/>
         </div>
       </div>
+      {
+        commentBox && (
+          <form   onSubmit={handleSubmit} className='mt-3 flex space-x-2'>
+            <input
+            value={input}
+            onChange={e=>setInput(e.target.value)}
+            className='flex flex-1 rounded-lg outline-none  bg-gray-100' type='text' placeholder='Write A Comment'></input>
+            <button  
+            type='submit'
+           
+            disabled={!input} className='text-twitter
+              disabled:text-gray-200 '>Comment</button>
+          </form>
+        )
+      }
       {
         comments?.length>0 && (
           <div className='my-2 mt-5 m-h-44 space-y-5  overflow-y-scroll border-t border-gray-100 p-5'>

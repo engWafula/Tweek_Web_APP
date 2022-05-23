@@ -10,14 +10,14 @@ export interface Tweet extends TweetBody{
     text: string
 }
 
-export const TweetBody = {
+export type TweetBody = {
     text: string,
     username: string,
     profileImg: string,
     image?:string
 }
 
-export const CommentBody={
+export type CommentBody={
 comment: string,
 tweetId: string,
 username: string,
